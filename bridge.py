@@ -182,8 +182,16 @@ class DiscordBot(commands.Bot):
         logger.info(f"Discord: bridging {PAIR_COUNT} channel pair(s)")
 
     async def on_message(self, message: discord.Message):
-        if message.author.bot or message.webhook_id:
+        # Ignore the own discord bot (THIS IS OPTIONAL)
+        if message.author == self.user:
             return
+
+        # Ignore messages by the bridge-webhook (Anti-Loop)
+        if message.webhook_id is not None:
+            bridge_webhook_ids = {wh.id for wh in discord_webhooks.values()}
+            if message.webhook_id in bridge_webhook_ids:
+                return
+        
         discord_id = message.channel.id
         if discord_id not in DISCORD_TO_STOAT:
             return
