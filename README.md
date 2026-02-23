@@ -99,8 +99,6 @@ docker run \
   --env-file .env \
   ghcr.io/jmgstudios/discordstoatbridgebot:latest
 ```
-```
-```
 
 ## Notes
 
